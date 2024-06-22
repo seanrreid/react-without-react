@@ -1,15 +1,20 @@
 import { customCreateElement } from "../lib/customCreateElement.js";
 
-const ImageListComponent = (parentEl, image) => {
-  const imgSrc = URL.createObjectURL(image);
-  const imageEl = customCreateElement(
-    "img",
-    "image",
-    { id: "src", value: imgSrc },
-    ""
-  );
+const ImageListComponent = (parentEl, images) => {
   const imageListEl = customCreateElement("div", "image-list", {}, "");
-  imageListEl.appendChild(imageEl);
+
+  images.map((image) => {
+    const imgSrc = URL.createObjectURL(image);
+    const imageEl = customCreateElement(
+      "img",
+      "image",
+      { id: "src", value: imgSrc },
+      ""
+    );
+
+    imageListEl.appendChild(imageEl);
+  });
+
   parentEl.append(imageListEl);
 };
 

@@ -1,7 +1,10 @@
 import { customCreateElement } from "../lib/customCreateElement.js";
+import { state, updateState } from "../lib/state.js";
 import ImageListComponent from "./ImageList.js";
 
 const ImageFormComponent = (parentEl) => {
+  let imageState = [...state];
+
   const imageFormInput = `
     <label>
         File Upload
@@ -17,12 +20,16 @@ const ImageFormComponent = (parentEl) => {
     imageFormInput
   );
 
+  const fileInput = imageFormEl.querySelector("input[name='imageUpload']");
+  fileInput.addEventListener("change", (e) => {
+    const { target } = e;
+    const { files } = target;
+    imageState = updateState(imageState, files[0]);
+  });
+
   imageFormEl.addEventListener("submit", (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
-    const file = formData.get("imageUpload");
-
-    ImageListComponent(parentEl, file);
+    ImageListComponent(parentEl, imageState);
   });
 
   parentEl.append(imageFormEl);
